@@ -4,7 +4,7 @@
     {{ parent() }}
     {% if checkAccess('see_pastries') %}
         <li>
-            <a href="/pastries"><i class="fa fa-cutlery fa-fw"></i> <span>{{translate('PASTRIES.LIST')}}</span></a>
+            <a href="{{site.uri.public}}/pastries"><i class="fa fa-cutlery fa-fw"></i> <span>{{translate('PASTRIES.LIST')}}</span></a>
         </li>
     {% endif %}
 {% endblock %}
