@@ -11,21 +11,25 @@
                 <div class="box-header">
                     <h3 class="box-title"><i class="fa fa-cutlery fa-fw"></i> {{translate('PASTRIES.LIST')}}</h3>
                 </div>
-                <div class="box-body">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th>{{translate('PASTRIES.NAME')}}</th>
-                            {% if checkAccess('see_pastry_origin') %}<th>{{translate('PASTRIES.ORIGIN')}}</th>{% endif %}
-                            <th>{{translate('PASTRIES.DESCRIPTION')}}</th>
-                        </tr>
-                        {% for pastry in pastries %}
-                            <tr>
-                                <td>{{pastry.name}}</td>
-                                {% if checkAccess('see_pastry_origin') %}<td>{{pastry.origin}}</td>{% endif %}
-                                <td>{{pastry.description}}</td>
-                            </tr>
-                        {% endfor %}
-                    </table>
+                  <div id="pastriesTable" class="box box-primary">
+                      <div class="box-header">
+                          <h3 class="box-title pull-left"><i class="fa fa-fw fa-user"></i> Members</h3>
+                          {% include "tables/table-tool-menu.html.twig" %}
+                      </div>
+                      <div class="box-body">
+                          {% include "tables/pastries.html.twig" with {
+                                  "table" : {
+                                      "id" : "table-pastries"
+                                  }
+                              }
+                          %}
+                      </div>
+                      <div class="box-footer">
+                          <button type="button" class="btn btn-success js-member-create">
+                              <i class="fa fa-plus-square"></i>  Create Pastry
+                          </button>
+                      </div>
+                  </div>
                 </div>
             </div>
         </div>
