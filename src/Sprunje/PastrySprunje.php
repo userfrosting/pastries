@@ -10,9 +10,9 @@
 namespace UserFrosting\Sprinkle\Pastries\Sprunje;
 
 use UserFrosting\Sprinkle\Core\Sprunje\Sprunje;
-use UserFrosting\Sprinkle\Pastires\Database\Models\Pastry;
+use UserFrosting\Sprinkle\Pastries\Database\Models\Pastries;
 
-class PastriesSprunje extends Sprunje
+class PastrySprunje extends Sprunje
 {
     protected $name = 'pastries';
 
@@ -30,7 +30,7 @@ class PastriesSprunje extends Sprunje
 
     protected function baseQuery()
     {
-        $instance = new Pastry();
+        $instance = new Pastries();
 
         return $instance->newQuery();
     }

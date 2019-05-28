@@ -1,0 +1,28 @@
+---
+name:
+  validators:
+    required:
+      label: "Name"
+      message: VALIDATE.REQUIRED
+    length:
+      label: "Name"
+      min: 1
+      max: 255
+      message: VALIDATE.LENGTH_RANGE
+  transformations:
+  - trim
+origin:
+  validators:
+    required:
+      label: "Origin"
+      message: VALIDATE.REQUIRED
+    length:
+      label: "Origin"
+      min: 1
+      max: 255
+      message: VALIDATE.LENGTH_RANGE
+  transformations:
+  - trim
+description:
+  transformations:
+  - trim

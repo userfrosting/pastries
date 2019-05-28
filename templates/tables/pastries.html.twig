@@ -7,10 +7,53 @@
                 <th data-column-name="name" data-column-template="#pastry-table-column-name" data-priority="1">Name <i class="fa fa-sort"></i></th>
                 <th data-column-name="origin" data-column-template="#pastry-table-column-origin" data-priority="1">Origin <i class="fa fa-sort"></i></th>
                 <th data-column-name="description" data-column-template="#pastry-table-column-description" data-priority="1">Description <i class="fa fa-sort"></i></th>
-                <th data-column-name="actions" data-column-template="#pastry-table-column-actions" data-priority="1">Actions <i class="fa fa-sort"></i></th>
+                <th data-column-name="actions" data-column-template="#pastry-table-column-actions" data-priority="1" data-sorter="false" data-filter="false">Actions </th>
             </tr>
         </thead>
         <tbody>
         </tbody>
     </table>
+{% endblock %}
+
+{% block table_cell_templates %}
+
+    {% verbatim %}
+    <script id="pastry-table-column-name" type="text/x-handlebars-template">
+        <td>
+            {{row.name}}
+        </td>
+    </script>
+    <script id="pastry-table-column-origin" type="text/x-handlebars-template">
+        <td>
+            {{row.origin}}
+        </td>
+    </script>
+    <script id="pastry-table-column-description" type="text/x-handlebars-template">
+        <td>
+            {{row.description}}
+        </td>
+    </script>
+    <script id="pastry-table-column-actions" type="text/x-handlebars-template">
+        <td>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    {% endverbatim %}{{translate("ACTIONS")}}{% verbatim %}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                    <li>
+                        <a href="#" data-slug="{{row.slug}}" class="js-pastry-edit">
+                        <i class="fa fa-edit"></i> Edit Pastry
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-slug="{{row.slug}}" class="js-pastry-delete">
+                        <i class="fa fa-trash-o"></i> Delete Pastry
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </td>
+    </script>
+    {% endverbatim %}
 {% endblock %}

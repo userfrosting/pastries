@@ -1,0 +1,17 @@
+{
+  "bundle": {
+    "js/pages/pastries": {
+      "scripts": [
+        "js/widgets/pastries.js",
+        "js/pages/pastries.js"
+      ],
+      "options": {
+        "result": {
+          "type": {
+            "scripts": "plain"
+          }
+        }
+      }
+    }
+  }
+}
