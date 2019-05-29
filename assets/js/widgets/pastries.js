@@ -35,7 +35,7 @@ function bindPastriesTableButtons(el, options) {
         $("body").ufModal({
             sourceUrl: site.uri.public + "/modals/pastries/edit",
             ajaxParams: {
-                pastry_name: $(this).data('name')
+                name: $(this).data('name')
             },
             msgTarget: $("#alerts-page")
         });
@@ -50,7 +50,7 @@ function bindPastriesTableButtons(el, options) {
         $("body").ufModal({
             sourceUrl: site.uri.public + "/modals/pastries/confirm-delete",
             ajaxParams: {
-                pastry_name: $(this).data('name')
+                name: $(this).data('name')
             },
             msgTarget: $("#alerts-page")
         });

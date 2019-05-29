@@ -2,14 +2,13 @@
 
 namespace UserFrosting\Sprinkle\Pastries\Database\Migrations\v100;
 
-use UserFrosting\System\Bakery\Migration;
+use UserFrosting\Sprinkle\Core\Database\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Schema\Builder;
 
 class PastriesTable extends Migration
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function up()
     {
@@ -27,7 +26,7 @@ class PastriesTable extends Migration
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function down()
     {

@@ -2,16 +2,13 @@
 
 namespace UserFrosting\Sprinkle\Pastries\Database\Migrations\v100;
 
-use UserFrosting\System\Bakery\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Schema\Builder;
+use UserFrosting\Sprinkle\Core\Database\Migration;
 use UserFrosting\Sprinkle\Account\Database\Models\Permission;
-use UserFrosting\Sprinkle\Account\Database\Models\Role;
 
 class PastriesPermissions extends Migration
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public $dependencies = [
         '\UserFrosting\Sprinkle\Account\Database\Migrations\v400\RolesTable',
@@ -19,7 +16,7 @@ class PastriesPermissions extends Migration
     ];
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function up()
     {
@@ -30,7 +27,7 @@ class PastriesPermissions extends Migration
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function down()
     {
@@ -44,15 +41,15 @@ class PastriesPermissions extends Migration
     {
         return [
             [
-                'slug' => 'see_pastries',
-                'name' => 'See the pastries page',
-                'conditions' => 'always()',
+                'slug'        => 'see_pastries',
+                'name'        => 'See the pastries page',
+                'conditions'  => 'always()',
                 'description' => 'Enables the user to see the pastries page'
             ],
             [
-                'slug' => 'see_pastry_origin',
-                'name' => 'See pastry origin',
-                'conditions' => 'always()',
+                'slug'        => 'see_pastry_origin',
+                'name'        => 'See pastry origin',
+                'conditions'  => 'always()',
                 'description' => 'Allows the user to see the origin of a pastry'
             ]
         ];
