@@ -82,7 +82,52 @@ class PastriesController extends SimpleController
         return $response->withJson([], 200);
     }
 
-    public function displayPage(Request $request, Response $response, $args)
+    public function delete(Request $request, Response $response, $args)
+    {
+        $pastry = Pastries::where('name', $args['name'])->first();
+
+        // If the group doesn't exist, return 404
+        if (!$pastry) {
+            throw new NotFoundException();
+        }
+
+        /** @var \UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager $authorizer */
+        $authorizer = $this->ci->authorizer;
+
+        /** @var \UserFrosting\Sprinkle\Account\Database\Models\Interfaces\UserInterface $currentUser */
+        $currentUser = $this->ci->currentUser;
+
+        // Access-controlled page
+        if (!$authorizer->checkAccess($currentUser, 'see_pastries')) {
+            throw new ForbiddenException();
+        }
+
+        /** @var \UserFrosting\Support\Repository\Repository $config */
+        $config = $this->ci->config;
+
+        $pastryName = $pastry->name;
+
+        // Begin transaction - DB will be rolled back if an exception occurs
+        Capsule::transaction(function () use ($pastry, $pastryName, $currentUser) {
+            $pastry->delete();
+            unset($pastry);
+
+            // Create activity record
+            $this->ci->userActivityLogger->info("User {$currentUser->user_name} deleted pastry {$pastryName}.", [
+                'type'    => 'pastry_delete',
+                'user_id' => $currentUser->id
+            ]);
+        });
+
+        /** @var \UserFrosting\Sprinkle\Core\Alert\AlertStream $ms */
+        $ms = $this->ci->alerts;
+
+        $ms->addMessageTranslated('success', 'Pastry deleted!');
+
+        return $response->withJson([], 200);
+    }
+
+    public function pagePastries(Request $request, Response $response, $args)
     {
         /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager */
         $authorizer = $this->ci->authorizer;
@@ -172,6 +217,37 @@ class PastriesController extends SimpleController
         ]);
     }
 
+    public function getModalDelete(Request $request, Response $response, $args)
+    {
+        // GET parameters
+        $params = $request->getQueryParams();
+
+        $pastry = Capsule::table('pastries')->where('name', '=', $params['name'])->first();
+
+        // If the group no longer exists, forward to main group listing page
+        if (!$pastry) {
+            throw new NotFoundException();
+        }
+
+        /** @var \UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager $authorizer */
+        $authorizer = $this->ci->authorizer;
+
+        /** @var \UserFrosting\Sprinkle\Account\Database\Models\Interfaces\UserInterface $currentUser */
+        $currentUser = $this->ci->currentUser;
+
+        // Access-controlled page
+        if (!$authorizer->checkAccess($currentUser, 'see_pastries')) {
+            throw new ForbiddenException();
+        }
+
+        return $this->ci->view->render($response, 'modals/confirm-delete-pastries.html.twig', [
+            'group' => $group,
+            'form'  => [
+                'action' => "api/pastries/p/{$pastry->name}",
+            ]
+        ]);
+    }
+
     public function getModalEdit(Request $request, Response $response, $args)
     {
         // GET parameters
@@ -212,13 +288,13 @@ class PastriesController extends SimpleController
 
     public function updateInfo(Request $request, Response $response, $args)
     {
-        $pastry = Capsule::table('pastries')->where('name', '=', $params['name'])->first();
+        $pastry = Pastries::where('name', $args['name'])->first();
 
         // If the pastry doesn't exist, return 404
         if (!$pastry) {
             throw new NotFoundException();
         }
-
+        Debug::debug(print_r($pastry, true));
         // Get PUT parameters: (name, origin, description)
         $params = $request->getParsedBody();
 
@@ -257,21 +333,21 @@ class PastriesController extends SimpleController
         if (!$authorizer->checkAccess($currentUser, 'see_pastries')) {
             throw new ForbiddenException();
         }
-
-        // Check if the name already exists.
-        if (
-            isset($data['name']) &&
-            $data['name'] != $group->name &&
-            Capsule::table('pastries')->where('name', '=', $data['name'])->first()
-        ) {
-            $ms->addMessageTranslated('danger', 'GROUP.NAME.IN_USE', $data);
-            $error = true;
-        }
-
-        if ($error) {
-            return $response->withJson([], 400);
-        }
-
+        /*
+                // Check if the name already exists.
+                if (
+                            isset($data['name']) &&
+                            $data['name'] != $group->name &&
+                            Capsule::table('pastries')->where('name', '=', $data['name'])->first()
+                        ) {
+                    $ms->addMessageTranslated('danger', 'GROUP.NAME.IN_USE', $data);
+                    $error = true;
+                }
+        
+                if ($error) {
+                    return $response->withJson([], 400);
+                }
+        */
         // Begin transaction - DB will be rolled back if an exception occurs
         Capsule::transaction(function () use ($data, $pastry, $currentUser) {
             // Update the pastry and generate success messages

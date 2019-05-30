@@ -5,8 +5,6 @@ $(document).ready(function() {
         useLoadingTransition: site.uf_table.use_loading_transition
     });
 
-
-
     // Bind creation button
     bindPastryCreationButton($("#widget-pastries"));
 

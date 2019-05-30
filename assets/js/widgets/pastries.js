@@ -43,7 +43,7 @@ function bindPastriesTableButtons(el, options) {
         attachPastryForm();
     });
 
-    // Delete user button
+    // Delete pastry button
     el.find('.js-pastry-delete').click(function(e) {
         e.preventDefault();
 
