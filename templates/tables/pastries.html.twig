@@ -4,10 +4,10 @@
     <table id="{{table.id}}" class="tablesorter table table-bordered table-hover table-striped" data-sortlist="{{table.sortlist}}">
         <thead>
             <tr>
-                <th data-column-name="name" data-column-template="#pastry-table-column-name" data-priority="1">Name <i class="fa fa-sort"></i></th>
-                <th data-column-name="origin" data-column-template="#pastry-table-column-origin" data-priority="1">Origin <i class="fa fa-sort"></i></th>
-                <th data-column-name="description" data-column-template="#pastry-table-column-description" data-priority="1">Description <i class="fa fa-sort"></i></th>
-                <th data-column-name="actions" data-column-template="#pastry-table-column-actions" data-priority="1" data-sorter="false" data-filter="false">Actions </th>
+                <th data-column-name="name" data-column-template="#pastry-table-column-name" data-priority="1">{{translate('PASTRIES.NAME')}} <i class="fa fa-sort"></i></th>
+                <th data-column-name="origin" data-column-template="#pastry-table-column-origin" data-priority="1">{{translate('PASTRIES.ORIGIN')}} <i class="fa fa-sort"></i></th>
+                <th data-column-name="description" data-column-template="#pastry-table-column-description" data-priority="1">{{translate('PASTRIES.DESCRIPTION')}} <i class="fa fa-sort"></i></th>
+                <th data-column-name="actions" data-column-template="#pastry-table-column-actions" data-priority="1" data-sorter="false" data-filter="false">{{translate('ACTIONS')}} </th>
             </tr>
         </thead>
         <tbody>
@@ -43,12 +43,12 @@
                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
                     <li>
                         <a href="#" data-name="{{row.name}}" class="js-pastry-edit">
-                        <i class="fa fa-edit"></i> Edit Pastry
+                        <i class="fa fa-edit"></i> {% endverbatim %}{{translate('PASTRIES.EDIT')}}{% verbatim %}
                         </a>
                     </li>
                     <li>
                         <a href="#" data-name="{{row.name}}" class="js-pastry-delete">
-                        <i class="fa fa-trash-o"></i> Delete Pastry
+                        <i class="fa fa-trash-o"></i> {% endverbatim %}{{translate('PASTRIES.DELETE')}}{% verbatim %}
                         </a>
                     </li>
                 </ul>
