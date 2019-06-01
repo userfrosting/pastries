@@ -2,10 +2,10 @@
 name:
   validators:
     required:
-      label: "Name"
+      label: "&NAME"
       message: VALIDATE.REQUIRED
     length:
-      label: "Name"
+      label: "&NAME"
       min: 1
       max: 255
       message: VALIDATE.LENGTH_RANGE
@@ -14,10 +14,10 @@ name:
 origin:
   validators:
     required:
-      label: "Origin"
+      label: "&ORIGIN"
       message: VALIDATE.REQUIRED
     length:
-      label: "Origin"
+      label: "&ORIGIN"
       min: 1
       max: 255
       message: VALIDATE.LENGTH_RANGE
@@ -26,8 +26,8 @@ origin:
 description:
   validators:
     length:
-      label: "Origin"
+      label: "&DESCRIPTION"
       min: 1
-      max: 255
+      max: 65535
       message: VALIDATE.LENGTH_RANGE
   transformations:
