@@ -24,5 +24,10 @@ origin:
   transformations:
   - trim
 description:
+  validators:
+    length:
+      label: "Origin"
+      min: 1
+      max: 255
+      message: VALIDATE.LENGTH_RANGE
   transformations:
-  - trim

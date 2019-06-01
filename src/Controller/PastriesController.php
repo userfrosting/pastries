@@ -6,7 +6,6 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use UserFrosting\Sprinkle\Core\Controller\SimpleController;
-use UserFrosting\Sprinkle\Core\Facades\Debug;
 use UserFrosting\Support\Exception\ForbiddenException;
 use UserFrosting\Sprinkle\Pastries\Database\Models\Pastries;
 use UserFrosting\Sprinkle\Pastries\Sprunje\PastrySprunje;
@@ -14,6 +13,7 @@ use UserFrosting\Fortress\RequestDataTransformer;
 use UserFrosting\Fortress\RequestSchema;
 use UserFrosting\Fortress\ServerSideValidator;
 use UserFrosting\Support\Exception\NotFoundException;
+use UserFrosting\Fortress\Adapter\JqueryValidationAdapter;
 
 class PastriesController extends SimpleController
 {
@@ -51,8 +51,16 @@ class PastriesController extends SimpleController
             $ms->addValidationErrors($validator);
             $error = true;
         }
-        Debug::debug('var data');
-        Debug::debug(print_r($data, true));
+
+        // Check if a pastry with this name already exists
+        if (Pastries::where('name', $params['name'])->first()) {
+            $ms->addMessageTranslated('danger', 'This pastry name is already in use.', $data);
+            $error = true;
+        }
+
+        if ($error) {
+            return $response->withJson([], 400);
+        }
 
         /** @var \UserFrosting\Support\Repository\Repository $config */
         $config = $this->ci->config;
@@ -67,12 +75,12 @@ class PastriesController extends SimpleController
             $pastry->description = $data['description'];
             $pastry->origin = $data['origin'];
 
-            // Store new group to database
+            // Store new pastry to database
             $pastry->save();
 
             // Create activity record
             $this->ci->userActivityLogger->info("User {$currentUser->user_name} created pastry {$pastry->name}.", [
-              'type'    => 'group_create',
+              'type'    => 'pastry_create',
               'user_id' => $currentUser->id
           ]);
 
@@ -86,7 +94,7 @@ class PastriesController extends SimpleController
     {
         $pastry = Pastries::where('name', $args['name'])->first();
 
-        // If the group doesn't exist, return 404
+        // If the pastry doesn't exist, return 404
         if (!$pastry) {
             throw new NotFoundException();
         }
@@ -101,9 +109,6 @@ class PastriesController extends SimpleController
         if (!$authorizer->checkAccess($currentUser, 'see_pastries')) {
             throw new ForbiddenException();
         }
-
-        /** @var \UserFrosting\Support\Repository\Repository $config */
-        $config = $this->ci->config;
 
         $pastryName = $pastry->name;
 
@@ -127,7 +132,7 @@ class PastriesController extends SimpleController
         return $response->withJson([], 200);
     }
 
-    public function pagePastries(Request $request, Response $response, $args)
+    public function pageList(Request $request, Response $response, $args)
     {
         /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager */
         $authorizer = $this->ci->authorizer;
@@ -141,8 +146,6 @@ class PastriesController extends SimpleController
         }
 
         $pastries = Pastries::all();
-
-        //Debug::debug($pastries);
 
         return $this->ci->view->render($response, 'pages/pastries.html.twig', [
             'pastries' => $pastries
@@ -185,16 +188,17 @@ class PastriesController extends SimpleController
         /** @var \UserFrosting\Sprinkle\Account\Database\Models\Interfaces\UserInterface $currentUser */
         $currentUser = $this->ci->currentUser;
 
-        /** @var \UserFrosting\I18n\MessageTranslator $translator */
-        $translator = $this->ci->translator;
-
         // Access-controlled page
         if (!$authorizer->checkAccess($currentUser, 'see_pastries')) {
             throw new ForbiddenException();
         }
 
-        /** @var \UserFrosting\Sprinkle\Core\Util\ClassMapper $classMapper */
-        $classMapper = $this->ci->classMapper;
+        /** @var \UserFrosting\I18n\MessageTranslator $translator */
+        $translator = $this->ci->translator;
+
+        // Load validation rules
+        $schema = new RequestSchema('schema://requests/pastry/create.yaml');
+        $validator = new JqueryValidationAdapter($schema, $translator);
 
         // Create a dummy pastry to prepopulate fields
         $pastry = new Pastries();
@@ -213,6 +217,9 @@ class PastriesController extends SimpleController
                 'method'      => 'POST',
                 'fields'      => $fields,
                 'submit_text' => 'Create'
+            ],
+            'page' => [
+                'validators' => $validator->rules('json', false)
             ]
         ]);
     }
@@ -224,7 +231,7 @@ class PastriesController extends SimpleController
 
         $pastry = Capsule::table('pastries')->where('name', '=', $params['name'])->first();
 
-        // If the group no longer exists, forward to main group listing page
+        // If the pastry no longer exists, forward to main pastry listing page
         if (!$pastry) {
             throw new NotFoundException();
         }
@@ -241,8 +248,8 @@ class PastriesController extends SimpleController
         }
 
         return $this->ci->view->render($response, 'modals/confirm-delete-pastries.html.twig', [
-            'group' => $group,
-            'form'  => [
+            'pastry' => $pastry,
+            'form'   => [
                 'action' => "api/pastries/p/{$pastry->name}",
             ]
         ]);
@@ -275,13 +282,20 @@ class PastriesController extends SimpleController
         'disabled' => []
     ];
 
+        // Load validation rules
+        $schema = new RequestSchema('schema://requests/pastry/edit.yaml');
+        $validator = new JqueryValidationAdapter($schema, $translator);
+
         return $this->ci->view->render($response, 'modals/pastries.html.twig', [
         'pastry' => $pastry,
         'form'   => [
             'action'      => "api/pastries/p/{$pastry->name}",
-            'method'      => 'POST',
+            'method'      => 'PUT',
             'fields'      => $fields,
             'submit_text' => 'Update'
+        ],
+        'page' => [
+            'validators' => $validator->rules('json', false)
         ]
     ]);
     }
@@ -294,7 +308,7 @@ class PastriesController extends SimpleController
         if (!$pastry) {
             throw new NotFoundException();
         }
-        Debug::debug(print_r($pastry, true));
+
         // Get PUT parameters: (name, origin, description)
         $params = $request->getParsedBody();
 
@@ -333,21 +347,21 @@ class PastriesController extends SimpleController
         if (!$authorizer->checkAccess($currentUser, 'see_pastries')) {
             throw new ForbiddenException();
         }
-        /*
-                // Check if the name already exists.
-                if (
+
+        // Check if the name already exists.
+        if (
                             isset($data['name']) &&
                             $data['name'] != $group->name &&
                             Capsule::table('pastries')->where('name', '=', $data['name'])->first()
                         ) {
-                    $ms->addMessageTranslated('danger', 'GROUP.NAME.IN_USE', $data);
-                    $error = true;
-                }
-        
-                if ($error) {
-                    return $response->withJson([], 400);
-                }
-        */
+            $ms->addMessageTranslated('danger', 'A pastry with this name already exists.', $data);
+            $error = true;
+        }
+
+        if ($error) {
+            return $response->withJson([], 400);
+        }
+
         // Begin transaction - DB will be rolled back if an exception occurs
         Capsule::transaction(function () use ($data, $pastry, $currentUser) {
             // Update the pastry and generate success messages
