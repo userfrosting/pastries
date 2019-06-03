@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * UserFrosting (http://www.userfrosting.com)
+ *
+ * @link      https://github.com/userfrosting/UserFrosting
+ * @copyright Copyright (c) 2019 Alexander Weissman
+ * @license   https://github.com/userfrosting/UserFrosting/blob/master/LICENSE.md (MIT License)
+ */
+
 namespace UserFrosting\Sprinkle\Pastries\Controller;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
@@ -69,11 +77,7 @@ class PastriesController extends SimpleController
         // Begin transaction - DB will be rolled back if an exception occurs
         Capsule::transaction(function () use ($data, $ms, $currentUser) {
             // Create the pastry
-            $pastry = new Pastries();
-
-            $pastry->name = $data['name'];
-            $pastry->description = $data['description'];
-            $pastry->origin = $data['origin'];
+            $pastry = new Pastries($data);
 
             // Store new pastry to database
             $pastry->save();
@@ -81,7 +85,7 @@ class PastriesController extends SimpleController
             // Create activity record
             $this->ci->userActivityLogger->info("User {$currentUser->user_name} created pastry {$pastry->name}.", [
               'type'    => 'pastry_create',
-              'user_id' => $currentUser->id
+              'user_id' => $currentUser->id,
           ]);
 
             $ms->addMessageTranslated('success', 'New pastry created!', $data);
@@ -120,7 +124,7 @@ class PastriesController extends SimpleController
             // Create activity record
             $this->ci->userActivityLogger->info("User {$currentUser->user_name} deleted pastry {$pastryName}.", [
                 'type'    => 'pastry_delete',
-                'user_id' => $currentUser->id
+                'user_id' => $currentUser->id,
             ]);
         });
 
@@ -148,7 +152,7 @@ class PastriesController extends SimpleController
         $pastries = Pastries::all();
 
         return $this->ci->view->render($response, 'pages/pastries.html.twig', [
-            'pastries' => $pastries
+            'pastries' => $pastries,
         ]);
     }
 
@@ -207,7 +211,7 @@ class PastriesController extends SimpleController
 
         $fields = [
             'hidden'   => [],
-            'disabled' => []
+            'disabled' => [],
         ];
 
         return $this->ci->view->render($response, 'modals/pastries.html.twig', [
@@ -216,11 +220,11 @@ class PastriesController extends SimpleController
                 'action'      => 'api/pastries',
                 'method'      => 'POST',
                 'fields'      => $fields,
-                'submit_text' => 'Create'
+                'submit_text' => 'Create',
             ],
             'page' => [
-                'validators' => $validator->rules('json', false)
-            ]
+                'validators' => $validator->rules('json', false),
+            ],
         ]);
     }
 
@@ -229,7 +233,7 @@ class PastriesController extends SimpleController
         // GET parameters
         $params = $request->getQueryParams();
 
-        $pastry = Capsule::table('pastries')->where('name', '=', $params['name'])->first();
+        $pastry = Pastries::where('name', $params['name'])->first();
 
         // If the pastry no longer exists, forward to main pastry listing page
         if (!$pastry) {
@@ -251,8 +255,8 @@ class PastriesController extends SimpleController
             'pastry' => $pastry,
             'form'   => [
                 'action' => "api/pastries/p/{$pastry->name}",
-            ]
-        ]);
+              ],
+            ]);
     }
 
     public function getModalEdit(Request $request, Response $response, $args)
@@ -260,9 +264,9 @@ class PastriesController extends SimpleController
         // GET parameters
         $params = $request->getQueryParams();
 
-        $pastry = Capsule::table('pastries')->where('name', '=', $params['name'])->first();
+        $pastry = Pastries::where('name', $params['name'])->first();
 
-        // If the group doesn't exist, return 404
+        // If the postry doesn't exist, return 404
         if (!$pastry) {
             throw new NotFoundException();
         }
@@ -278,9 +282,9 @@ class PastriesController extends SimpleController
 
         // Generate form
         $fields = [
-        'hidden'   => [],
-        'disabled' => []
-    ];
+          'hidden'   => [],
+          'disabled' => [],
+        ];
 
         // Load validation rules
         $schema = new RequestSchema('schema://requests/pastry/edit.yaml');
@@ -292,12 +296,12 @@ class PastriesController extends SimpleController
             'action'      => "api/pastries/p/{$pastry->name}",
             'method'      => 'PUT',
             'fields'      => $fields,
-            'submit_text' => 'Update'
+            'submit_text' => 'Update',
         ],
         'page' => [
-            'validators' => $validator->rules('json', false)
-        ]
-    ]);
+            'validators' => $validator->rules('json', false),
+          ],
+        ]);
     }
 
     public function updateInfo(Request $request, Response $response, $args)
@@ -349,11 +353,7 @@ class PastriesController extends SimpleController
         }
 
         // Check if the name already exists.
-        if (
-                            isset($data['name']) &&
-                            $data['name'] != $group->name &&
-                            Capsule::table('pastries')->where('name', '=', $data['name'])->first()
-                        ) {
+        if (isset($data['name']) && $data['name'] != $pastry->name && Capsule::table('pastries')->where('name', '=', $data['name'])->first()) {
             $ms->addMessageTranslated('danger', 'A pastry with this name already exists.', $data);
             $error = true;
         }
@@ -377,12 +377,12 @@ class PastriesController extends SimpleController
             // Create activity record
             $this->ci->userActivityLogger->info("User {$currentUser->user_name} updated details for pastry {$pastry->name}.", [
                 'type'    => 'pastry_update_info',
-                'user_id' => $currentUser->id
+                'user_id' => $currentUser->id,
             ]);
         });
 
         $ms->addMessageTranslated('success', 'The pastry was updated!', [
-            'name' => $pastry->name
+            'name' => $pastry->name,
         ]);
 
         return $response->withJson([], 200);

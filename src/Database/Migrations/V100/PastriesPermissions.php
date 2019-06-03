@@ -10,7 +10,7 @@ class PastriesPermissions extends Migration
     /**
      * {@inheritdoc}
      */
-    public $dependencies = [
+    public static $dependencies = [
         '\UserFrosting\Sprinkle\Account\Database\Migrations\v400\RolesTable',
         '\UserFrosting\Sprinkle\Account\Database\Migrations\v400\PermissionsTable'
     ];
