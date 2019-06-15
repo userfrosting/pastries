@@ -353,7 +353,7 @@ class PastriesController extends SimpleController
         }
 
         // Check if the name already exists.
-        if (isset($data['name']) && $data['name'] != $pastry->name && Capsule::table('pastries')->where('name', '=', $data['name'])->first()) {
+        if (isset($data['name']) && $data['name'] != $pastry->name && Pastries::where('name', $data['name'])->first()) {
             $ms->addMessageTranslated('danger', 'A pastry with this name already exists.', $data);
             $error = true;
         }
