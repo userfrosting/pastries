@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * UserFrosting (http://www.userfrosting.com)
+ *
+ * @link      https://github.com/userfrosting/UserFrosting
+ * @copyright Copyright (c) 2019 Alexander Weissman
+ * @license   https://github.com/userfrosting/UserFrosting/blob/master/LICENSE.md (MIT License)
+ */
+
 namespace UserFrosting\Sprinkle\Pastries\Database\Migrations\v100;
 
 use UserFrosting\Sprinkle\Core\Database\Migration;
@@ -12,7 +20,7 @@ class PastriesPermissions extends Migration
      */
     public static $dependencies = [
         '\UserFrosting\Sprinkle\Account\Database\Migrations\v400\RolesTable',
-        '\UserFrosting\Sprinkle\Account\Database\Migrations\v400\PermissionsTable'
+        '\UserFrosting\Sprinkle\Account\Database\Migrations\v400\PermissionsTable',
     ];
 
     /**
@@ -44,14 +52,14 @@ class PastriesPermissions extends Migration
                 'slug'        => 'see_pastries',
                 'name'        => 'See the pastries page',
                 'conditions'  => 'always()',
-                'description' => 'Enables the user to see the pastries page'
+                'description' => 'Enables the user to see the pastries page',
             ],
             [
                 'slug'        => 'see_pastry_origin',
                 'name'        => 'See pastry origin',
                 'conditions'  => 'always()',
-                'description' => 'Allows the user to see the origin of a pastry'
-            ]
+                'description' => 'Allows the user to see the origin of a pastry',
+            ],
         ];
     }
 }
