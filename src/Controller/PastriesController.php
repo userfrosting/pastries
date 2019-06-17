@@ -45,7 +45,7 @@ class PastriesController extends SimpleController
         $ms = $this->ci->alerts;
 
         // Load the request schema
-        $schema = new RequestSchema('schema://requests/pastry/create.yaml');
+        $schema = new RequestSchema('schema://requests/pastry/pastry.yaml');
 
         // Whitelist and set parameter defaults
         $transformer = new RequestDataTransformer($schema);
@@ -69,9 +69,6 @@ class PastriesController extends SimpleController
         if ($error) {
             return $response->withJson([], 400);
         }
-
-        /** @var \UserFrosting\Support\Repository\Repository $config */
-        $config = $this->ci->config;
 
         // All checks passed!  log events/activities and create pastry
         // Begin transaction - DB will be rolled back if an exception occurs
@@ -183,9 +180,6 @@ class PastriesController extends SimpleController
 
     public function getModalCreate(Request $request, Response $response, $args)
     {
-        // GET parameters
-        $params = $request->getQueryParams();
-
         /** @var \UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager $authorizer */
         $authorizer = $this->ci->authorizer;
 
@@ -201,13 +195,11 @@ class PastriesController extends SimpleController
         $translator = $this->ci->translator;
 
         // Load validation rules
-        $schema = new RequestSchema('schema://requests/pastry/create.yaml');
+        $schema = new RequestSchema('schema://requests/pastry/pastry.yaml');
         $validator = new JqueryValidationAdapter($schema, $translator);
 
         // Create a dummy pastry to prepopulate fields
         $pastry = new Pastries();
-
-        $pastry->icon = 'fa fa-cutlery';
 
         $fields = [
             'hidden'   => [],
@@ -287,7 +279,7 @@ class PastriesController extends SimpleController
         ];
 
         // Load validation rules
-        $schema = new RequestSchema('schema://requests/pastry/edit.yaml');
+        $schema = new RequestSchema('schema://requests/pastry/pastry.yaml');
         $validator = new JqueryValidationAdapter($schema, $translator);
 
         return $this->ci->view->render($response, 'modals/pastries.html.twig', [
@@ -320,7 +312,7 @@ class PastriesController extends SimpleController
         $ms = $this->ci->alerts;
 
         // Load the request schema
-        $schema = new RequestSchema('schema://requests/pastry/edit.yaml');
+        $schema = new RequestSchema('schema://requests/pastry/pastry.yaml');
 
         // Whitelist and set parameter defaults
         $transformer = new RequestDataTransformer($schema);

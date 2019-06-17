@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * UserFrosting (http://www.userfrosting.com)
+ *
+ * @link      https://github.com/userfrosting/UserFrosting
+ * @copyright Copyright (c) 2019 Alexander Weissman
+ * @license   https://github.com/userfrosting/UserFrosting/blob/master/LICENSE.md (MIT License)
+ */
+
 use UserFrosting\Sprinkle\Core\Util\NoCache;
 
 $app->group('/pastries', function () {
@@ -7,7 +15,7 @@ $app->group('/pastries', function () {
          ->setName('pastries');
 })->add('authGuard');
 
-// These routes will for any methods that retrieve/modify data from the database.
+// These routes will be for any methods that retrieve/modify data from the database.
 $app->group('/api/pastries', function () {
     $this->delete('/p/{name}', 'UserFrosting\Sprinkle\Pastries\Controller\PastriesController:delete');
 
@@ -18,7 +26,7 @@ $app->group('/api/pastries', function () {
     $this->put('/p/{name}', 'UserFrosting\Sprinkle\Pastries\Controller\PastriesController:updateInfo');
 })->add('authGuard')->add(new NoCache());
 
-// These routes will be used to store any modals
+// These routes will be used to access any modals
 $app->group('/modals/pastries', function () {
     $this->get('/create', 'UserFrosting\Sprinkle\Pastries\Controller\PastriesController:getModalCreate');
 
