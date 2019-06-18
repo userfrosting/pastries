@@ -201,17 +201,11 @@ class PastriesController extends SimpleController
         // Create a dummy pastry to prepopulate fields
         $pastry = new Pastries();
 
-        $fields = [
-            'hidden'   => [],
-            'disabled' => [],
-        ];
-
         return $this->ci->view->render($response, 'modals/pastries.html.twig', [
             'pastry' => $pastry,
             'form'   => [
                 'action'      => 'api/pastries',
                 'method'      => 'POST',
-                'fields'      => $fields,
                 'submit_text' => 'Create',
             ],
             'page' => [
@@ -272,12 +266,6 @@ class PastriesController extends SimpleController
         /** @var \UserFrosting\I18n\MessageTranslator $translator */
         $translator = $this->ci->translator;
 
-        // Generate form
-        $fields = [
-          'hidden'   => [],
-          'disabled' => [],
-        ];
-
         // Load validation rules
         $schema = new RequestSchema('schema://requests/pastry/pastry.yaml');
         $validator = new JqueryValidationAdapter($schema, $translator);
@@ -287,7 +275,6 @@ class PastriesController extends SimpleController
         'form'   => [
             'action'      => "api/pastries/p/{$pastry->name}",
             'method'      => 'PUT',
-            'fields'      => $fields,
             'submit_text' => 'Update',
         ],
         'page' => [
@@ -325,12 +312,6 @@ class PastriesController extends SimpleController
         if (!$validator->validate($data)) {
             $ms->addValidationErrors($validator);
             $error = true;
-        }
-
-        // Determine targeted fields
-        $fieldNames = [];
-        foreach ($data as $name => $value) {
-            $fieldNames[] = $name;
         }
 
         /** @var \UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager $authorizer */
