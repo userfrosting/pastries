@@ -10,8 +10,8 @@
 
 namespace UserFrosting\Sprinkle\Pastries\Database\Migrations\v100;
 
-use UserFrosting\Sprinkle\Core\Database\Migration;
 use UserFrosting\Sprinkle\Pastries\Database\Models\Pastries;
+use UserFrosting\System\Bakery\Migration;
 
 class DefaultPastries extends Migration
 {
@@ -39,8 +39,10 @@ class DefaultPastries extends Migration
     public function down()
     {
         foreach ($this->pastries() as $pastry) {
-            $pastry = Pastries::where($pastry)->first();
-            $pastry->delete();
+            if (Pastries::where($pastry)->first()) {
+                $pastry = Pastries::where($pastry)->first();
+                $pastry->delete();
+            }
         }
     }
 
