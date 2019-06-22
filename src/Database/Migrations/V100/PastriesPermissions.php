@@ -1,16 +1,24 @@
 <?php
 
+/*
+ * UserFrosting (http://www.userfrosting.com)
+ *
+ * @link      https://github.com/userfrosting/UserFrosting
+ * @copyright Copyright (c) 2019 Alexander Weissman
+ * @license   https://github.com/userfrosting/UserFrosting/blob/master/LICENSE.md (MIT License)
+ */
+
 namespace UserFrosting\Sprinkle\Pastries\Database\Migrations\v100;
 
+use UserFrosting\Sprinkle\Core\Database\Migration;
 use UserFrosting\Sprinkle\Account\Database\Models\Permission;
-use UserFrosting\System\Bakery\Migration;
 
 class PastriesPermissions extends Migration
 {
     /**
      * {@inheritdoc}
      */
-    public $dependencies = [
+    public static $dependencies = [
         '\UserFrosting\Sprinkle\Account\Database\Migrations\v400\RolesTable',
         '\UserFrosting\Sprinkle\Account\Database\Migrations\v400\PermissionsTable',
     ];
