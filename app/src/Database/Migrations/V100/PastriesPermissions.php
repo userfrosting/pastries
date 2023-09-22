@@ -48,7 +48,6 @@ class PastriesPermissions extends Migration
         }
     }
 
-    
     protected function pastryPermissions(): array
     {
         return [
