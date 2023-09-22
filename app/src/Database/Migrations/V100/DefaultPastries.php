@@ -45,6 +45,9 @@ class DefaultPastries extends Migration
         }
     }
 
+    /**
+     * @return string[][]
+     */
     protected function pastries(): array
     {
         return [
