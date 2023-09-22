@@ -1,23 +1,31 @@
 <?php
 
+/*
+ * UserFrosting Pastries Sprinkle
+ *
+ * @link      https://github.com/userfrosting/pastries
+ * @copyright Copyright (c) 2023 Louis Charette
+ * @license   https://github.com/userfrosting/pastries/blob/master/LICENSE (MIT License)
+ */
+
 namespace UserFrosting\Sprinkle\Pastries\Database\Migrations\v100;
 
+use UserFrosting\Sprinkle\Core\Database\Migration;
 use UserFrosting\Sprinkle\Pastries\Database\Models\Pastries;
-use UserFrosting\System\Bakery\Migration;
 
 class DefaultPastries extends Migration
 {
     /**
      * {@inheritdoc}
      */
-    public $dependencies = [
-        '\UserFrosting\Sprinkle\Pastries\Database\Migrations\V100\PastriesTable',
+    public static $dependencies = [
+        PastriesTable::class,
     ];
 
     /**
      * {@inheritdoc}
      */
-    public function up()
+    public function up(): void
     {
         foreach ($this->pastries() as $pastry) {
             $pastry = new Pastries($pastry);
@@ -28,15 +36,16 @@ class DefaultPastries extends Migration
     /**
      * {@inheritdoc}
      */
-    public function down()
+    public function down(): void
     {
         foreach ($this->pastries() as $pastry) {
+            /** @var Pastries */
             $pastry = Pastries::where($pastry)->first();
             $pastry->delete();
         }
     }
 
-    protected function pastries()
+    protected function pastries(): array
     {
         return [
             [

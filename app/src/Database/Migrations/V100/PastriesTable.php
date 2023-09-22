@@ -1,16 +1,24 @@
 <?php
 
+/*
+ * UserFrosting Pastries Sprinkle
+ *
+ * @link      https://github.com/userfrosting/pastries
+ * @copyright Copyright (c) 2023 Louis Charette
+ * @license   https://github.com/userfrosting/pastries/blob/master/LICENSE (MIT License)
+ */
+
 namespace UserFrosting\Sprinkle\Pastries\Database\Migrations\v100;
 
 use Illuminate\Database\Schema\Blueprint;
-use UserFrosting\System\Bakery\Migration;
+use UserFrosting\Sprinkle\Core\Database\Migration;
 
 class PastriesTable extends Migration
 {
     /**
      * {@inheritdoc}
      */
-    public function up()
+    public function up(): void
     {
         $this->schema->create('pastries', function (Blueprint $table) {
             $table->increments('id');
@@ -28,7 +36,7 @@ class PastriesTable extends Migration
     /**
      * {@inheritdoc}
      */
-    public function down()
+    public function down(): void
     {
         $this->schema->drop('pastries');
     }

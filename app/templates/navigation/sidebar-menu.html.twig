@@ -1,0 +1,10 @@
+{% extends "@admin-sprinkle/navigation/sidebar-menu.html.twig" %}
+
+{% block navigation %}
+    {{ parent() }}
+    {% if checkAccess('see_pastries') %}
+        <li>
+            <a href="{{ urlFor('pastries') }}"><i class="fas fa-utensils fa-fw"></i> <span>{{translate('PASTRIES.LIST')}}</span></a>
+        </li>
+    {% endif %}
+{% endblock %}
