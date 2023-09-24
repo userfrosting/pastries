@@ -73,6 +73,11 @@ class PastriesControllerTest extends TestCase
         // Migration down table migration, and make sure table doesn't exist anymore.
         $this->ci->get(PastriesTable::class)->down();
         $this->assertFalse($builder->hasTable('pastries'));
+
+        // Run back on, to avoid conflict with further tests
+        $this->ci->get(PastriesTable::class)->up();
+        $this->ci->get(DefaultPastries::class)->up();
+        $this->ci->get(PastriesPermissions::class)->up();
     }
 
     /**
