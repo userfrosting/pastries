@@ -8,7 +8,7 @@
  * @license   https://github.com/userfrosting/pastries/blob/master/LICENSE (MIT License)
  */
 
-namespace UserFrosting\Sprinkle\Pastries\Database\Migrations\v100;
+namespace UserFrosting\Sprinkle\Pastries\Database\Migrations\V100;
 
 use UserFrosting\Sprinkle\Account\Database\Migrations\v400\PermissionsTable;
 use UserFrosting\Sprinkle\Account\Database\Migrations\v400\RolesTable;

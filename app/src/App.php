@@ -14,9 +14,9 @@ use UserFrosting\Sprinkle\Account\Account;
 use UserFrosting\Sprinkle\Admin\Admin;
 use UserFrosting\Sprinkle\Core\Core;
 use UserFrosting\Sprinkle\Core\Sprinkle\Recipe\MigrationRecipe;
-use UserFrosting\Sprinkle\Pastries\Database\Migrations\v100\DefaultPastries;
-use UserFrosting\Sprinkle\Pastries\Database\Migrations\v100\PastriesPermissions;
-use UserFrosting\Sprinkle\Pastries\Database\Migrations\v100\PastriesTable;
+use UserFrosting\Sprinkle\Pastries\Database\Migrations\V100\DefaultPastries;
+use UserFrosting\Sprinkle\Pastries\Database\Migrations\V100\PastriesPermissions;
+use UserFrosting\Sprinkle\Pastries\Database\Migrations\V100\PastriesTable;
 use UserFrosting\Sprinkle\SprinkleRecipe;
 use UserFrosting\Theme\AdminLTE\AdminLTE;
 

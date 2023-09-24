@@ -8,7 +8,7 @@
  * @license   https://github.com/userfrosting/pastries/blob/master/LICENSE (MIT License)
  */
 
-namespace UserFrosting\Sprinkle\Pastries\Database\Migrations\v100;
+namespace UserFrosting\Sprinkle\Pastries\Database\Migrations\V100;
 
 use Illuminate\Database\Schema\Blueprint;
 use UserFrosting\Sprinkle\Core\Database\Migration;

@@ -23,6 +23,8 @@ class Routes implements RouteDefinitionInterface
         $app->group('/pastries', function (RouteCollectorProxy $group) {
             $group->get('', PastriesController::class)->setName('pastries');
         })->add(AuthGuard::class);
+
+        // Redirect root to dashboard
         $app->redirect('/', '/dashboard', 301)->setName('index');
     }
 }
