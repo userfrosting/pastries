@@ -20,7 +20,7 @@ use UserFrosting\Sprinkle\Pastries\Database\Migrations\V100\PastriesTable;
 use UserFrosting\Sprinkle\SprinkleRecipe;
 use UserFrosting\Theme\AdminLTE\AdminLTE;
 
-class App implements SprinkleRecipe, MigrationRecipe
+class MyApp implements SprinkleRecipe, MigrationRecipe
 {
     /**
      * {@inheritdoc}
@@ -59,7 +59,7 @@ class App implements SprinkleRecipe, MigrationRecipe
     public function getRoutes(): array
     {
         return [
-            Routes::class,
+            MyRoutes::class,
         ];
     }
 

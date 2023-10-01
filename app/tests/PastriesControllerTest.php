@@ -15,7 +15,7 @@ use UserFrosting\Sprinkle\Account\Database\Models\Permission;
 use UserFrosting\Sprinkle\Account\Database\Models\User;
 use UserFrosting\Sprinkle\Account\Testing\WithTestUser;
 use UserFrosting\Sprinkle\Core\Testing\RefreshDatabase;
-use UserFrosting\Sprinkle\Pastries\App;
+use UserFrosting\Sprinkle\Pastries\MyApp;
 use UserFrosting\Sprinkle\Pastries\Database\Migrations\V100\DefaultPastries;
 use UserFrosting\Sprinkle\Pastries\Database\Migrations\V100\PastriesPermissions;
 use UserFrosting\Sprinkle\Pastries\Database\Migrations\V100\PastriesTable;
@@ -31,7 +31,7 @@ class PastriesControllerTest extends TestCase
     use WithTestUser;
 
     // Use our Sprinkle to test
-    protected string $mainSprinkle = App::class;
+    protected string $mainSprinkle = MyApp::class;
 
     /**
      * Setup test database

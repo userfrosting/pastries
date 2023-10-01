@@ -16,7 +16,7 @@ use UserFrosting\Sprinkle\Account\Authenticate\Authenticator;
 use UserFrosting\Sprinkle\Account\Exceptions\ForbiddenException;
 use UserFrosting\Sprinkle\Pastries\Database\Models\Pastries;
 
-class PastriesController
+class PastriesPageAction
 {
     public function __invoke(
         Response $response,

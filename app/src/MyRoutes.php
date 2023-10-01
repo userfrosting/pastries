@@ -14,14 +14,14 @@ use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
 use UserFrosting\Routes\RouteDefinitionInterface;
 use UserFrosting\Sprinkle\Account\Authenticate\AuthGuard;
-use UserFrosting\Sprinkle\Pastries\Controller\PastriesController;
+use UserFrosting\Sprinkle\Pastries\Controller\PastriesPageAction;
 
-class Routes implements RouteDefinitionInterface
+class MyRoutes implements RouteDefinitionInterface
 {
     public function register(App $app): void
     {
         $app->group('/pastries', function (RouteCollectorProxy $group) {
-            $group->get('', PastriesController::class)->setName('pastries');
+            $group->get('', PastriesPageAction::class)->setName('pastries');
         })->add(AuthGuard::class);
 
         // Redirect root to dashboard

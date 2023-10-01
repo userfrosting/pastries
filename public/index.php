@@ -17,8 +17,8 @@ if (PHP_SAPI == 'cli-server') {
     $_SERVER['SCRIPT_NAME'] = '/index.php';
 }
 
-use UserFrosting\Sprinkle\Pastries\App;
+use UserFrosting\Sprinkle\Pastries\MyApp;
 use UserFrosting\UserFrosting;
 
-$uf = new UserFrosting(App::class);
+$uf = new UserFrosting(MyApp::class);
 $uf->run();
