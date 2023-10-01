@@ -12,6 +12,7 @@ namespace UserFrosting\Sprinkle\Pastries\Database\Migrations\V100;
 
 use Illuminate\Database\Schema\Blueprint;
 use UserFrosting\Sprinkle\Core\Database\Migration;
+use UserFrosting\Sprinkle\Pastries\Database\Seeds\DefaultPastries;
 
 class PastriesTable extends Migration
 {
@@ -31,6 +32,10 @@ class PastriesTable extends Migration
             $table->collation = 'utf8_unicode_ci';
             $table->charset = 'utf8';
         });
+
+        // Run Seed for default pastries
+        $seed = new DefaultPastries();
+        $seed->run();
     }
 
     /**

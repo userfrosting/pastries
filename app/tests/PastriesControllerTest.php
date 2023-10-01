@@ -15,11 +15,10 @@ use UserFrosting\Sprinkle\Account\Database\Models\Permission;
 use UserFrosting\Sprinkle\Account\Database\Models\User;
 use UserFrosting\Sprinkle\Account\Testing\WithTestUser;
 use UserFrosting\Sprinkle\Core\Testing\RefreshDatabase;
-use UserFrosting\Sprinkle\Pastries\MyApp;
-use UserFrosting\Sprinkle\Pastries\Database\Migrations\V100\DefaultPastries;
 use UserFrosting\Sprinkle\Pastries\Database\Migrations\V100\PastriesPermissions;
 use UserFrosting\Sprinkle\Pastries\Database\Migrations\V100\PastriesTable;
 use UserFrosting\Sprinkle\Pastries\Database\Models\Pastries;
+use UserFrosting\Sprinkle\Pastries\MyApp;
 use UserFrosting\Testing\TestCase;
 
 /**
@@ -60,11 +59,7 @@ class PastriesControllerTest extends TestCase
         $this->assertNotNull(Permission::where('slug', 'see_pastry_origin')->first());
 
         // Migration down data migration
-        $this->ci->get(DefaultPastries::class)->down();
         $this->ci->get(PastriesPermissions::class)->down();
-
-        // Make sure Pastries were removed
-        $this->assertSame(0, Pastries::count());
 
         // Make sure permissions were removed
         $this->assertNull(Permission::where('slug', 'see_pastries')->first());
@@ -76,7 +71,6 @@ class PastriesControllerTest extends TestCase
 
         // Run back on, to avoid conflict with further tests
         $this->ci->get(PastriesTable::class)->up();
-        $this->ci->get(DefaultPastries::class)->up();
         $this->ci->get(PastriesPermissions::class)->up();
     }
 

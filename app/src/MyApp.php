@@ -14,13 +14,14 @@ use UserFrosting\Sprinkle\Account\Account;
 use UserFrosting\Sprinkle\Admin\Admin;
 use UserFrosting\Sprinkle\Core\Core;
 use UserFrosting\Sprinkle\Core\Sprinkle\Recipe\MigrationRecipe;
-use UserFrosting\Sprinkle\Pastries\Database\Migrations\V100\DefaultPastries;
+use UserFrosting\Sprinkle\Core\Sprinkle\Recipe\SeedRecipe;
 use UserFrosting\Sprinkle\Pastries\Database\Migrations\V100\PastriesPermissions;
 use UserFrosting\Sprinkle\Pastries\Database\Migrations\V100\PastriesTable;
+use UserFrosting\Sprinkle\Pastries\Database\Seeds\DefaultPastries;
 use UserFrosting\Sprinkle\SprinkleRecipe;
 use UserFrosting\Theme\AdminLTE\AdminLTE;
 
-class MyApp implements SprinkleRecipe, MigrationRecipe
+class MyApp implements SprinkleRecipe, MigrationRecipe, SeedRecipe
 {
     /**
      * {@inheritdoc}
@@ -82,8 +83,19 @@ class MyApp implements SprinkleRecipe, MigrationRecipe
     {
         return [
             PastriesTable::class,
-            DefaultPastries::class,
             PastriesPermissions::class,
+        ];
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @codeCoverageIgnore
+     */
+    public function getSeeds(): array
+    {
+        return [
+            DefaultPastries::class,
         ];
     }
 }

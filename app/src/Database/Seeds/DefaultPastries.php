@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * UserFrosting Pastries Sprinkle
  *
@@ -8,40 +10,24 @@
  * @license   https://github.com/userfrosting/pastries/blob/master/LICENSE (MIT License)
  */
 
-namespace UserFrosting\Sprinkle\Pastries\Database\Migrations\V100;
+namespace UserFrosting\Sprinkle\Pastries\Database\Seeds;
 
-use UserFrosting\Sprinkle\Core\Database\Migration;
+use UserFrosting\Sprinkle\Core\Seeder\SeedInterface;
 use UserFrosting\Sprinkle\Pastries\Database\Models\Pastries;
 
-class DefaultPastries extends Migration
+/**
+ * Seeder for the default pastries.
+ */
+class DefaultPastries implements SeedInterface
 {
     /**
      * {@inheritdoc}
      */
-    public static $dependencies = [
-        PastriesTable::class,
-    ];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function up(): void
+    public function run(): void
     {
         foreach ($this->pastries() as $pastry) {
             $pastry = new Pastries($pastry);
             $pastry->save();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function down(): void
-    {
-        foreach ($this->pastries() as $pastry) {
-            /** @var Pastries */
-            $pastry = Pastries::where($pastry)->first();
-            $pastry->delete();
         }
     }
 
